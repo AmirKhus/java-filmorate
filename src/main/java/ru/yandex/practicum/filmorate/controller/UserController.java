@@ -9,14 +9,21 @@ import ru.yandex.practicum.filmorate.model.User;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
     private final static Logger log = LoggerFactory.getLogger(UserController.class);
-    List<User> users = new ArrayList<>();
+    private Map<Long, User> users = new HashMap<>();
+    private long counterId = 0L;
+
     @PostMapping("/user/create")
-    void addUser(@Valid @RequestBody User user) throws ValidationException {
+    public void addUser(@Valid @RequestBody User user) {
+        counterId++;
+        user.setId(counterId);
+
         if((user.getEmail() == null  || user.getEmail().equals("")) || user.getEmail().indexOf('@') == -1) {
             log.error("Электронная почта была пусто или не содержала символа '@'");
             throw new ValidationException("электронная почта не может быть пустой и должна содержать символ '@'");
@@ -38,21 +45,13 @@ public class UserController {
         }
 
         log.info("Был создан пользователь ->" +user);
-        users.add(user);
+        users.put(user.getId(),user);
     }
 
     @PutMapping("/user/update/{id}")
-    void updateUser(@Valid @RequestBody User user,@PathVariable("id") Long id) {
-        boolean found = false;
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == id) {
-                users.set(i, user);
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
+    public void updateUser(@Valid @RequestBody User user,@PathVariable("id") Long id) {
+        if (users.containsKey(id)) {
+            users.put(user.getId(), user);
             log.info("Объект с id " + id + " успешно обновлен.");
         } else {
             log.info("Объект с id " + id + " не найден.");
@@ -60,8 +59,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    List<User> getAllUsers() {
-        return users;
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users.values());
     }
 }
 
