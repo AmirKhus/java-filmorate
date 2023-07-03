@@ -39,7 +39,7 @@ import java.sql.Date;
             FilmController filmController = new FilmController();
             Film film = new Film();
             film.setName("Тестовый фильм");
-            film.setDescription("Это очень длинное описание, которое превышает максимально допустимую длину в 200 символов. Это всего лишь тест. Это очень длинное описание, которое превышает максимально допустимую длину в 200 символов. Это всего лишь тест.");
+            film.setDescription("A".repeat(201));
             film.setReleaseDate(Date.valueOf("2023-06-28"));
             film.setDuration(120);
 
