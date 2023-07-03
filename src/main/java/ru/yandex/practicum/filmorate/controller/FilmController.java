@@ -9,15 +9,20 @@ import ru.yandex.practicum.filmorate.model.Film;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class FilmController {
-    List<Film> films = new ArrayList<>();
+    private Map<Long,Film> films = new HashMap<>();
     private final static Logger log = LoggerFactory.getLogger(FilmController.class);
+    private long counterId = 0L;
 
     @PostMapping("/film/create")
-    void addFilm(@Valid @RequestBody Film film) throws ValidationException {
+    public void addFilm(@Valid @RequestBody Film film) {
+        counterId++;
+        film.setId(counterId);
         if(film.getName() == null  || film.getName().equals("")) {
             log.error("Название фильма было пустым");
             throw new ValidationException("Название фильма не может быть пустым!");
@@ -39,23 +44,13 @@ public class FilmController {
         }
 
         log.info("Создана объект нового фильма -> "+film);
-        films.add(film);
+        films.put(counterId,film);
     }
 
     @PutMapping("/film/update/{id}")
-    void updateFilm(@Valid @RequestBody Film film, @PathVariable("id") Long id) {
-        log.info("Изменен объект с id "+ film.getId()+". Обновленные данные фильма  -> "+film);
-
-        boolean found = false;
-        for (int i = 0; i < films.size(); i++) {
-            if (films.get(i).getId() == id) {
-                films.set(i, film);
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
+    public void updateFilm(@Valid @RequestBody Film film, @PathVariable("id") Long id) {
+        if (films.containsKey(id)) {
+            films.put(film.getId(), film);
             log.info("Объект с id " + id + " успешно обновлен.");
         } else {
             log.info("Объект с id " + id + " не найден.");
@@ -63,7 +58,7 @@ public class FilmController {
     }
 
     @GetMapping("/films")
-    List<Film> getAllFilms() {
-        return films;
+    public List<Film> getAllFilms() {
+        return new ArrayList<>(films.values());
     }
 }
