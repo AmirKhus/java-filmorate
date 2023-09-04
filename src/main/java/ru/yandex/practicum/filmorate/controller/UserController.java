@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 public class UserController {
-    private final static Logger log = LoggerFactory.getLogger(UserController.class);
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
     private Map<Long, User> users = new HashMap<>();
     private long counterId = 0L;
 
@@ -24,17 +24,17 @@ public class UserController {
         counterId++;
         user.setId(counterId);
 
-        if((user.getEmail() == null  || user.getEmail().equals("")) || user.getEmail().indexOf('@') == -1) {
+        if ((user.getEmail() == null || user.getEmail().equals("")) || user.getEmail().indexOf('@') == -1) {
             log.error("Электронная почта была пусто или не содержала символа '@'");
             throw new ValidationException("электронная почта не может быть пустой и должна содержать символ '@'");
         }
 
-        if (user.getLogin() == null  || user.getLogin().equals("") || user.getLogin().indexOf(' ') != -1) {
+        if (user.getLogin() == null || user.getLogin().equals("") || user.getLogin().indexOf(' ') != -1) {
             log.error("логин не может быть пустым и содержать пробелы!");
             throw new ValidationException("логин не может быть пустым и содержать пробелы!");
         }
 
-        if (user.getName() == null  || user.getName().equals("")) {
+        if (user.getName() == null || user.getName().equals("")) {
             log.warn("Поля имени у пользователя был вписан логин из-за пустого значения имени");
             user.setName(user.getLogin());
         }
@@ -44,12 +44,12 @@ public class UserController {
             throw new ValidationException("дата рождения не может быть в будущем!");
         }
 
-        log.info("Был создан пользователь ->" +user);
-        users.put(user.getId(),user);
+        log.info("Был создан пользователь ->" + user);
+        users.put(user.getId(), user);
     }
 
     @PutMapping("/user/update/{id}")
-    public void updateUser(@Valid @RequestBody User user,@PathVariable("id") Long id) {
+    public void updateUser(@Valid @RequestBody User user, @PathVariable("id") Long id) {
         if (users.containsKey(id)) {
             users.put(user.getId(), user);
             log.info("Объект с id " + id + " успешно обновлен.");
