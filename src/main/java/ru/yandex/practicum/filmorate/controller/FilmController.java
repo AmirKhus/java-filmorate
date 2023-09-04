@@ -15,20 +15,20 @@ import java.util.Map;
 
 @RestController
 public class FilmController {
-    private Map<Long,Film> films = new HashMap<>();
-    private final static Logger log = LoggerFactory.getLogger(FilmController.class);
+    private Map<Long, Film> films = new HashMap<>();
+    private final Logger log = LoggerFactory.getLogger(FilmController.class);
     private long counterId = 0L;
 
     @PostMapping("/film/create")
     public void addFilm(@Valid @RequestBody Film film) {
         counterId++;
         film.setId(counterId);
-        if(film.getName() == null  || film.getName().equals("")) {
+        if (film.getName() == null || film.getName().equals("")) {
             log.error("Название фильма было пустым");
             throw new ValidationException("Название фильма не может быть пустым!");
         }
 
-        if (film.getDescription().length()>200) {
+        if (film.getDescription().length() > 200) {
             log.error("Превышена максимальная длина описания (200 символов)");
             throw new ValidationException("Превышена максимальная длина описания (200 символов)");
         }
@@ -38,13 +38,13 @@ public class FilmController {
             throw new ValidationException("Нельзя добавлять даты ниже 28 декабря 1895 года");
         }
 
-        if (film.getDuration()<0) {
+        if (film.getDuration() < 0) {
             log.error("Продолжительность фильма должна быть положительной");
             throw new ValidationException("Продолжительность фильма должна быть положительной");
         }
 
-        log.info("Создана объект нового фильма -> "+film);
-        films.put(counterId,film);
+        log.info("Создана объект нового фильма -> " + film);
+        films.put(counterId, film);
     }
 
     @PutMapping("/film/update/{id}")
