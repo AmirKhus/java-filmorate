@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
@@ -16,7 +17,6 @@ public class User {
     @NotBlank
     private String login;
     private String name;
-    @NotBlank
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$")
+    @PastOrPresent
     private Date birthday;
 }
