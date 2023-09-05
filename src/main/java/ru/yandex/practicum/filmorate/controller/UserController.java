@@ -2,6 +2,8 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -14,13 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private Map<Long, User> users = new HashMap<>();
     private long counterId = 0L;
 
-    @PostMapping("/user/create")
-    public void addUser(@Valid @RequestBody User user) {
+    @PostMapping
+    public @Valid User addUser(@Valid @RequestBody User user) {
         counterId++;
         user.setId(counterId);
 
@@ -46,20 +49,22 @@ public class UserController {
 
         log.info("Был создан пользователь ->" + user);
         users.put(user.getId(), user);
+        return user;
     }
 
-    @PutMapping("/user/update/{id}")
-    public void updateUser(@Valid @RequestBody User user, @PathVariable("id") Long id) {
-        if (users.containsKey(id)) {
-            user.setId(id);
-            users.put(id, user);
-            log.info("Объект с id " + id + " успешно обновлен.");
+    @PutMapping
+    public ResponseEntity<Object> updateUser(@Valid @RequestBody User user) {
+        if (users.containsKey(user.getId())) {
+            users.put(user.getId(), user);
+            log.info("Объект с id " + user.getId() + " успешно обновлен.");
+            return ResponseEntity.ok(user);
         } else {
-            log.info("Объект с id " + id + " не найден.");
+            log.info("Объект с id " + user.getId() + " не найден.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(user);
         }
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> getAllUsers() {
         return new ArrayList<>(users.values());
     }
