@@ -51,7 +51,8 @@ public class UserController {
     @PutMapping("/user/update/{id}")
     public void updateUser(@Valid @RequestBody User user, @PathVariable("id") Long id) {
         if (users.containsKey(id)) {
-            users.put(user.getId(), user);
+            user.setId(id);
+            users.put(id, user);
             log.info("Объект с id " + id + " успешно обновлен.");
         } else {
             log.info("Объект с id " + id + " не найден.");

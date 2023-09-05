@@ -50,7 +50,8 @@ public class FilmController {
     @PutMapping("/film/update/{id}")
     public void updateFilm(@Valid @RequestBody Film film, @PathVariable("id") Long id) {
         if (films.containsKey(id)) {
-            films.put(film.getId(), film);
+            film.setId(id);
+            films.put(id, film);
             log.info("Объект с id " + id + " успешно обновлен.");
         } else {
             log.info("Объект с id " + id + " не найден.");
