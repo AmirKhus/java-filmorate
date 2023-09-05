@@ -1,0 +1,75 @@
+package ru.yandex.practicum.filmorate.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
+
+import javax.validation.Valid;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/films")
+public class FilmController {
+    private Map<Long, Film> films = new HashMap<>();
+    private final Logger log = LoggerFactory.getLogger(FilmController.class);
+    private long counterId = 0L;
+
+    @PostMapping
+    public @Valid Film addFilm(@Valid @RequestBody Film film) {
+        counterId++;
+        film.setId(counterId);
+        if (film.getName() == null || film.getName().equals("")) {
+            log.error("Название фильма было пустым");
+            throw new ValidationException("Название фильма не может быть пустым!");
+        }
+
+        if (film.getDescription().length() > 200) {
+            log.error("Превышена максимальная длина описания (200 символов)");
+            throw new ValidationException("Превышена максимальная длина описания (200 символов)");
+        }
+
+        if (film.getReleaseDate().compareTo(Date.valueOf("1895-12-28")) < 0) {
+            log.error("Нельзя добавлять даты ниже 28 декабря 1895 года");
+            throw new ValidationException("Нельзя добавлять даты ниже 28 декабря 1895 года");
+        }
+
+        if (film.getDuration() < 0) {
+            log.error("Продолжительность фильма должна быть положительной");
+            throw new ValidationException("Продолжительность фильма должна быть положительной");
+        }
+
+        log.info("Создана объект нового фильма -> " + film);
+        films.put(counterId, film);
+        return film;
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> updateFilm(@Valid @RequestBody Film film) {
+        try {
+            if (films.containsKey(film.getId())) {
+                films.put(film.getId(), film);
+                log.info("Объект с id " + film.getId() + " успешно обновлен.");
+                return ResponseEntity.ok(film);
+            } else {
+                log.info("Объект с id " + film.getId() + " не найден.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(film);
+            }
+        } catch (Exception e) {
+            log.error("Произошла ошибка при обновлении фильма: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(film);
+        }
+    }
+
+    @GetMapping
+    public List<Film> getAllFilms() {
+        return new ArrayList<>(films.values());
+    }
+}
