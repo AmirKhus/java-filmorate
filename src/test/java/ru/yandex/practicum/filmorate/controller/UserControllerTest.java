@@ -4,14 +4,22 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.sql.Date;
 
 public class UserControllerTest {
 
+    UserStorage userStorage;
+    UserService userService;
+
     @Test
     void testAddUserValidEmail() {
-        UserController userController = new UserController();
+        userStorage = new InMemoryUserStorage();
+        userService = new UserService(userStorage);
+        UserController userController = new UserController(userStorage, userService);
         User user = new User();
         user.setEmail("test@example.com");
         user.setLogin("test");
@@ -23,7 +31,9 @@ public class UserControllerTest {
 
     @Test
     void testAddUserInvalidEmail() {
-        UserController userController = new UserController();
+        userStorage = new InMemoryUserStorage();
+        userService = new UserService(userStorage);
+        UserController userController = new UserController(userStorage, userService);
         User user = new User();
         user.setEmail("testexample.com");
         user.setLogin("test");
@@ -36,7 +46,9 @@ public class UserControllerTest {
 
     @Test
     void testAddUserValidLogin() {
-        UserController userController = new UserController();
+        userStorage = new InMemoryUserStorage();
+        userService = new UserService(userStorage);
+        UserController userController = new UserController(userStorage, userService);
         User user = new User();
         user.setEmail("test@example.com");
         user.setLogin("test");
@@ -48,7 +60,9 @@ public class UserControllerTest {
 
     @Test
     void testAddUserInvalidLogin() {
-        UserController userController = new UserController();
+        userStorage = new InMemoryUserStorage();
+        userService = new UserService(userStorage);
+        UserController userController = new UserController(userStorage, userService);
         User user = new User();
         user.setEmail("test@example.com");
         user.setLogin("test test");
@@ -61,7 +75,9 @@ public class UserControllerTest {
 
     @Test
     void testAddUserEmptyName() {
-        UserController userController = new UserController();
+        userStorage = new InMemoryUserStorage();
+        userService = new UserService(userStorage);
+        UserController userController = new UserController(userStorage, userService);
         User user = new User();
         user.setEmail("test@example.com");
         user.setLogin("test");
@@ -74,7 +90,9 @@ public class UserControllerTest {
 
     @Test
     void testAddUserFutureBirthday() {
-        UserController userController = new UserController();
+        userStorage = new InMemoryUserStorage();
+        userService = new UserService(userStorage);
+        UserController userController = new UserController(userStorage, userService);
         User user = new User();
         user.setEmail("test@example.com");
         user.setLogin("test");
