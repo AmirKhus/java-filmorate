@@ -6,6 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import java.sql.Date;
+import java.util.Set;
 
 @Data
 public class User {
@@ -18,4 +19,5 @@ public class User {
     private String name;
     @PastOrPresent
     private Date birthday;
+    private Set<Long> friends;
 }
