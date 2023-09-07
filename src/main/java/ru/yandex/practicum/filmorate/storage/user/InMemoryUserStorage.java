@@ -98,7 +98,8 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public List<User> getFriendsByUserId(Long userId) {
-        List<User> usersFriendsList = new LinkedList<>();
+        Set<User> set = new TreeSet<>();
+        List<User> usersFriendsList = new ArrayList<>(set);
         for (Long userById :
                 getUserById(userId).getFriends()) {
             usersFriendsList.add(getUserById(userById));
