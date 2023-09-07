@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> updateUser(@Valid @RequestBody User user) {
+    public User updateUser(@Valid @RequestBody User user) {
         return userStorage.updateUser(user);
     }
 
@@ -42,14 +42,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUserById(@PathVariable String id) {
-        User user = userStorage.getUserById(Long.parseLong(id));
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(user);
-        }
-
+    public User getUserById(@PathVariable String id) {
+        return userStorage.getUserById(Long.parseLong(id));
     }
 
 

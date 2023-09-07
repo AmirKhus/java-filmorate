@@ -50,17 +50,18 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public ResponseEntity<Object> updateUser(User user) {
+    public User updateUser(User user) {
         if (users.containsKey(user.getId())) {
+
             if (user.getFriends() == null)
                 user.setFriends(new HashSet<>());
 
             users.put(user.getId(), user);
             log.info("Объект с id " + user.getId() + " успешно обновлен.");
-            return ResponseEntity.ok(user);
+            return user;
         } else {
-            log.info("Объект с id " + user.getId() + " не найден.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(user);
+            log.error("Объект с id " + user.getId() + " не найден.");
+            throw new NotFoundException("Объект с id " + user.getId() + " не найден.");
         }
     }
 

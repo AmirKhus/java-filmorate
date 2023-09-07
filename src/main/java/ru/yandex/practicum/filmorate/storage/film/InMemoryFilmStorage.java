@@ -51,21 +51,16 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public ResponseEntity<Object> updateFilm(Film film) {
-        try {
-            if (films.containsKey(film.getId())) {
-                films.put(film.getId(), film);
-                if (film.getLike() == null)
-                    film.setLike(new HashSet<>());
-                log.info("Объект с id " + film.getId() + " успешно обновлен.");
-                return ResponseEntity.ok(film);
-            } else {
-                log.info("Объект с id " + film.getId() + " не найден.");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(film);
-            }
-        } catch (Exception e) {
-            log.error("Произошла ошибка при обновлении фильма: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(film);
+    public Film updateFilm(Film film) {
+        if (films.containsKey(film.getId())) {
+            films.put(film.getId(), film);
+            if (film.getLike() == null)
+                film.setLike(new HashSet<>());
+            log.info("Объект с id " + film.getId() + " успешно обновлен.");
+            return film;
+        } else {
+            log.info("Объект с id " + film.getId() + " не найден.");
+            throw new NotFoundException("Объект с id " + film.getId() + " не найден.");
         }
     }
 
