@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import java.util.List;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class UserService {
 

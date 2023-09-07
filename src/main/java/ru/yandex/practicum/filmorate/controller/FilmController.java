@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/films")
 public class FilmController {

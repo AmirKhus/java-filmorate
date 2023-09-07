@@ -14,7 +14,6 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")

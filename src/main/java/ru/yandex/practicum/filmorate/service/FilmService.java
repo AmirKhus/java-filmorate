@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import java.util.List;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class FilmService {
     private final FilmStorage filmStorage;
