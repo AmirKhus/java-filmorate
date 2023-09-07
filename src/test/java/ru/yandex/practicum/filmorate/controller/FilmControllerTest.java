@@ -8,7 +8,7 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class FilmControllerTest {
 
@@ -23,7 +23,7 @@ public class FilmControllerTest {
         Film film = new Film();
         film.setName("Test Film");
         film.setDescription("This is a test film");
-        film.setReleaseDate(Date.valueOf("2023-06-28"));
+        film.setReleaseDate(LocalDate.parse("2023-06-28"));
         film.setDuration(120);
 
         Assertions.assertDoesNotThrow(() -> filmController.addFilm(film));
@@ -37,7 +37,7 @@ public class FilmControllerTest {
         Film film = new Film();
         film.setName("");
         film.setDescription("This is a test film");
-        film.setReleaseDate(Date.valueOf("2023-06-28"));
+        film.setReleaseDate(LocalDate.parse("2023-06-28"));
         film.setDuration(120);
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> filmController.addFilm(film));
@@ -52,7 +52,7 @@ public class FilmControllerTest {
         Film film = new Film();
         film.setName("Тестовый фильм");
         film.setDescription("A".repeat(201));
-        film.setReleaseDate(Date.valueOf("2023-06-28"));
+        film.setReleaseDate(LocalDate.parse("2023-06-28"));
         film.setDuration(120);
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> filmController.addFilm(film));
@@ -67,7 +67,7 @@ public class FilmControllerTest {
         Film film = new Film();
         film.setName("Test Film");
         film.setDescription("This is a test film");
-        film.setReleaseDate(Date.valueOf("1895-12-27"));
+        film.setReleaseDate(LocalDate.parse("1895-12-27"));
         film.setDuration(120);
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> filmController.addFilm(film));
@@ -82,7 +82,7 @@ public class FilmControllerTest {
         Film film = new Film();
         film.setName("Test Film");
         film.setDescription("This is a test film");
-        film.setReleaseDate(Date.valueOf("2023-06-28"));
+        film.setReleaseDate(LocalDate.parse("2023-06-28"));
         film.setDuration(-120);
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> filmController.addFilm(film));
