@@ -2,15 +2,13 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,7 +20,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film addFilm(Film film) {
-        if (film.getName() == null || film.getName().equals("")) {
+        if (film.getName() == null || film.getName().isEmpty()) {
             log.error("Название фильма было пустым");
             throw new ValidationException("Название фильма не может быть пустым!");
         }
@@ -32,7 +30,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new ValidationException("Превышена максимальная длина описания (200 символов)");
         }
 
-        if (film.getReleaseDate().compareTo(Date.valueOf("1895-12-28")) < 0) {
+        if (film.getReleaseDate().isBefore(LocalDate.parse("1895-12-28"))) {
             log.error("Нельзя добавлять даты ниже 28 декабря 1895 года");
             throw new ValidationException("Нельзя добавлять даты ниже 28 декабря 1895 года");
         }

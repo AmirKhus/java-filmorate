@@ -1,16 +1,15 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 @Component
@@ -21,22 +20,22 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User addUser(User user) {
-        if ((user.getEmail() == null || user.getEmail().equals("")) || user.getEmail().indexOf('@') == -1) {
+        if ((user.getEmail() == null || user.getEmail().isEmpty()) || user.getEmail().indexOf('@') == -1) {
             log.error("Электронная почта была пусто или не содержала символа '@'");
             throw new ValidationException("электронная почта не может быть пустой и должна содержать символ '@'");
         }
 
-        if (user.getLogin() == null || user.getLogin().equals("") || user.getLogin().indexOf(' ') != -1) {
+        if (user.getLogin() == null || user.getLogin().isEmpty() || user.getLogin().indexOf(' ') != -1) {
             log.error("логин не может быть пустым и содержать пробелы!");
             throw new ValidationException("логин не может быть пустым и содержать пробелы!");
         }
 
-        if (user.getName() == null || user.getName().equals("")) {
+        if (user.getName() == null || user.getName().isEmpty()) {
             log.warn("Поля имени у пользователя был вписан логин из-за пустого значения имени");
             user.setName(user.getLogin());
         }
 
-        if (user.getBirthday().after(new Date(System.currentTimeMillis()))) {
+        if (user.getBirthday().isAfter(LocalDate.now())) {
             log.error("дата рождения в будущем");
             throw new ValidationException("дата рождения не может быть в будущем!");
         }
@@ -120,3 +119,5 @@ public class InMemoryUserStorage implements UserStorage {
 
 
 }
+
+

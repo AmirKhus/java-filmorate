@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -18,6 +18,6 @@ public class User {
     private String login;
     private String name;
     @PastOrPresent
-    private Date birthday;
+    private LocalDate birthday;
     private Set<Long> friends;
 }
