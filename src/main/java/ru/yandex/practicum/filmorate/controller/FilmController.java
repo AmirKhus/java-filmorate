@@ -25,7 +25,7 @@ public class FilmController {
 
 
     @PostMapping
-    public @Valid Film addFilm(@Valid @RequestBody Film film) {
+    public Film addFilm(@Valid @RequestBody Film film) {
         return filmStorage.addFilm(film);
     }
 
