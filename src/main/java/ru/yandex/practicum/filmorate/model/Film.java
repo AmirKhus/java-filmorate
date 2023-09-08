@@ -18,4 +18,6 @@ public class Film {
     @Min(value = 1)
     private int duration;
     private Set<Long> like;
+    private long genreId;
+    private long МРАId;
 }
