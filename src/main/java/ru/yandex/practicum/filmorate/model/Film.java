@@ -4,7 +4,8 @@ import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 public class Film {
@@ -13,7 +14,8 @@ public class Film {
     private String name;
     @NotBlank
     private String description;
-    private Date releaseDate;
+    private LocalDate releaseDate;
     @Min(value = 1)
     private int duration;
+    private Set<Long> like;
 }
