@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -19,7 +20,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+
 @Qualifier
+@Component
 @RequiredArgsConstructor
 public class FilmDbStorage implements FilmStorage {
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
@@ -92,11 +95,11 @@ public class FilmDbStorage implements FilmStorage {
         if (film.getGenres() != null) {
             film.setGenres(filmGenreDAO.deleteDuplicateFilmGenre(film.getGenres()));
 
-                filmGenreDAO.deleteGenreForFilm(film.getId());
+            filmGenreDAO.deleteGenreForFilm(film.getId());
 
-                for (Genre g : film.getGenres()) {
-                    filmGenreDAO.addGenreForFilm(film.getId(), g.getId());
-                }
+            for (Genre g : film.getGenres()) {
+                filmGenreDAO.addGenreForFilm(film.getId(), g.getId());
+            }
 
         }
         log.info("Объект с id " + film.getId() + " успешно обновлен.");

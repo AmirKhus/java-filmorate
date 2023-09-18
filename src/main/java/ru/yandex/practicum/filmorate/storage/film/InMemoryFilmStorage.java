@@ -12,7 +12,6 @@ import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
 public class InMemoryFilmStorage implements FilmStorage {
     private Map<Long, Film> films = new HashMap<>();
     private final Logger log = LoggerFactory.getLogger(FilmController.class);

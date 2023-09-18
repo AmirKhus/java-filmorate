@@ -11,7 +11,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
 
-@Component
+
 public class InMemoryUserStorage implements UserStorage {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private Map<Long, User> users = new HashMap<>();
