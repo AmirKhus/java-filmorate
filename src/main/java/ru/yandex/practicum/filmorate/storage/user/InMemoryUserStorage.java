@@ -35,14 +35,13 @@ public class InMemoryUserStorage implements UserStorage {
             user.setName(user.getLogin());
         }
 
-        if (user.getBirthday().isAfter(LocalDate.now())) {
+        if (user.getBirthday().after(new Date(System.currentTimeMillis()))) {
             log.error("дата рождения в будущем");
             throw new ValidationException("дата рождения не может быть в будущем!");
         }
 
         counterId++;
         user.setId(counterId);
-        user.setFriends(new HashSet<>());
         users.put(user.getId(), user);
         log.info("Был создан пользователь ->" + user);
         return user;
@@ -52,8 +51,6 @@ public class InMemoryUserStorage implements UserStorage {
     public User updateUser(User user) {
         if (users.containsKey(user.getId())) {
 
-            if (user.getFriends() == null)
-                user.setFriends(new HashSet<>());
 
             users.put(user.getId(), user);
             log.info("Объект с id " + user.getId() + " успешно обновлен.");
@@ -78,43 +75,28 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User addFriend(Long userId, Long friendId) {
+    public void addFriend(Long userId, Long friendId) {
         User user = getUserById(userId);
         User friend = getUserById(friendId);
 
-
-        user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
         log.error("Взаимное доавление в друзья прошла успешна между пользователями с id -> " + userId + " и " + friendId);
-        return getUserById(userId);
     }
 
     @Override
-    public User deleteFriend(Long userId, Long friendId) {
-        getUserById(userId).getFriends().remove(friendId);
-        getUserById(friendId).getFriends().remove(userId);
-        return getUserById(userId);
+    public void deleteFriend(Long userId, Long friendId) {
     }
 
     @Override
     public List<User> getFriendsByUserId(Long userId) {
         Set<User> set = new TreeSet<>();
         List<User> usersFriendsList = new ArrayList<>(set);
-        for (Long userById :
-                getUserById(userId).getFriends()) {
-            usersFriendsList.add(getUserById(userById));
-        }
+
         return usersFriendsList;
     }
 
     @Override
     public List<User> getMutualFriends(Long userId, Long friendId) {
         List<User> mutualFriends = new ArrayList<>();
-        for (Long id : getUserById(userId).getFriends()) {
-            if (getUserById(friendId).getFriends().contains(id)) {
-                mutualFriends.add(getUserById(id));
-            }
-        }
         return mutualFriends;
     }
 

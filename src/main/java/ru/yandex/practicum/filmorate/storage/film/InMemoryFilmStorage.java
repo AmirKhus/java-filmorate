@@ -2,17 +2,16 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
 public class InMemoryFilmStorage implements FilmStorage {
     private Map<Long, Film> films = new HashMap<>();
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
@@ -30,7 +29,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new ValidationException("Превышена максимальная длина описания (200 символов)");
         }
 
-        if (film.getReleaseDate().isBefore(LocalDate.parse("1895-12-28"))) {
+        if (film.getReleaseDate().before(Date.valueOf("1895-12-28"))) {
             log.error("Нельзя добавлять даты ниже 28 декабря 1895 года");
             throw new ValidationException("Нельзя добавлять даты ниже 28 декабря 1895 года");
         }
@@ -52,12 +51,10 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film updateFilm(Film film) {
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
-            if (film.getLike() == null)
-                film.setLike(new HashSet<>());
             log.info("Объект с id " + film.getId() + " успешно обновлен.");
             return film;
         } else {
-            log.info("Объект с id " + film.getId() + " не найден.");
+            log.error("Объект с id " + film.getId() + " не найден.");
             throw new NotFoundException("Объект с id " + film.getId() + " не найден.");
         }
     }
@@ -68,7 +65,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public void addLike(Long userId, Long filmId) {
+    public void addLike(Long filmId, Long userId) {
         if (!getFilmById(filmId).getLike().contains(userId)) {
             getFilmById(filmId).getLike().add(userId);
         } else
