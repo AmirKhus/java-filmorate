@@ -24,7 +24,7 @@ public class MpaDAO implements MpaStorage {
         List<Mpa> mpas = new LinkedList<>();
         String sql = "select * from MPA";
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql);
-        while (sqlRowSet.next()){
+        while (sqlRowSet.next()) {
             mpas.add(new Mpa(
                     sqlRowSet.getLong("id"),
                     sqlRowSet.getString("name")));
@@ -32,7 +32,7 @@ public class MpaDAO implements MpaStorage {
         return mpas;
     }
 
-    public Mpa getMpaById(Long id){
+    public Mpa getMpaById(Long id) {
         String sql = "select * from MPA where ID = ?";
         log.info("Возвращаем строку по id из таблицы MPA!");
         return getMpaObject(jdbcTemplate.queryForRowSet(sql, id));
@@ -43,6 +43,7 @@ public class MpaDAO implements MpaStorage {
             return new Mpa(
                     sqlRowSet.getLong("id"),
                     sqlRowSet.getString("name"));
-        }throw new NotFoundException("Таблица MPA пустая или в нем не найдена нужная строка");
+        }
+        throw new NotFoundException("Таблица MPA пустая или в нем не найдена нужная строка");
     }
 }

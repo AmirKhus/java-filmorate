@@ -1,10 +1,8 @@
 package ru.yandex.practicum.filmorate.dao;
 
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -12,7 +10,6 @@ import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,26 +38,26 @@ public class FriendsDAO {
     }
 
     public void addFriend(Long userId, Long friendId) {
-        if(checkUserInTable(userId) && checkUserInTable(friendId)) {
+        if (checkUserInTable(userId) && checkUserInTable(friendId)) {
             String sqlCheckStatus = "select IS_FRIENDS from FRIENDS" +
                     " where FRIEND_ID = ?  and USER_ID = ? ";
             SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sqlCheckStatus, friendId, userId);
-            if(sqlRowSet.next()){
-                if(!sqlRowSet.getBoolean("IS_FRIENDS")){
+            if (sqlRowSet.next()) {
+                if (!sqlRowSet.getBoolean("IS_FRIENDS")) {
                     String sql1 = "update  FRIENDS" +
                             " set IS_FRIENDS = ? where FRIEND_ID = ?  and USER_ID = ?";
-                    jdbcTemplate.update(sql1,true, friendId,userId);
+                    jdbcTemplate.update(sql1, true, friendId, userId);
 
                     String sql = "insert into FRIENDS (USER_ID,FRIEND_ID, IS_FRIENDS) values(?,?, TRUE)";
                     jdbcTemplate.update(sql, userId, friendId);
                 }
-            }else {
+            } else {
                 String sql2 = "insert into FRIENDS (USER_ID,FRIEND_ID, IS_FRIENDS) values(?,?, FALSE)";
                 jdbcTemplate.update(sql2, userId, friendId);
             }
 
             log.info("Добавление в друзья прошла успешно между пользователями с id -> " + userId + " и " + friendId);
-        }else throw new NotFoundException("Не найден пользователь для добавлнеия в друщья");
+        } else throw new NotFoundException("Не найден пользователь для добавлнеия в друщья");
     }
 
     public Boolean checkUserInTable(Long id) {
@@ -84,12 +81,12 @@ public class FriendsDAO {
 
         if (sqlRowSet.next()) {
             jdbcTemplate.update(sqlUpdateFriendsStatus, userId, friendId);
-        }else
+        } else
             throw new NotFoundException("Пользователь у которого нужно обновть статус для добавления дружбы не найден в " +
-                    "таблице FRIENDS. id пользователя ->"+ userId+"  id друга ->" + friendId);
+                    "таблице FRIENDS. id пользователя ->" + userId + "  id друга ->" + friendId);
     }
 
-    public void deleteFriend(Long userId, Long friendId){
+    public void deleteFriend(Long userId, Long friendId) {
         String sql = "delete from FRIENDS where USER_ID = ? and FRIEND_ID =?";
         jdbcTemplate.update(sql, userId, friendId);
     }

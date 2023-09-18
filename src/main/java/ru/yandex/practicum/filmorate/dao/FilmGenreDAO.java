@@ -25,7 +25,7 @@ public class FilmGenreDAO {
                 "WHERE film_id = ? AND genre_id = ?;";
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sqlCheck, filmId, genreId);
         if (sqlRowSet.next()) {
-            if (sqlRowSet.getLong("count") == 0 ) {
+            if (sqlRowSet.getLong("count") == 0) {
                 String sql = "insert into FILM_GENRE(film_id, genre_id) values (?,?)";
                 jdbcTemplate.update(sql, filmId, genreId);
             }
@@ -42,8 +42,8 @@ public class FilmGenreDAO {
         while (sqlRowSet.next()) {
             genres.add(
                     new Genre(
-                    sqlRowSet.getLong("id"),
-                    sqlRowSet.getString("name"))
+                            sqlRowSet.getLong("id"),
+                            sqlRowSet.getString("name"))
             );
         }
         return genres;

@@ -20,8 +20,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-@Component
-@Qualifier("filmStorageDb")
+@Qualifier
 @RequiredArgsConstructor
 public class FilmDbStorage implements FilmStorage {
     private final Logger log = LoggerFactory.getLogger(FilmController.class);

@@ -18,7 +18,7 @@ public class LikesDAO {
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
     private final JdbcTemplate jdbcTemplate;
 
-    public void addLike(Long filmId,Long userId) {
+    public void addLike(Long filmId, Long userId) {
         String sql = "insert into likes (film_id,user_id) values(?,?)";
         jdbcTemplate.update(sql, filmId, userId);
 
@@ -31,14 +31,14 @@ public class LikesDAO {
         }
     }
 
-    public void deleteLike(Long filmId,Long userId) {
+    public void deleteLike(Long filmId, Long userId) {
         if (checkUserInTable(userId)) {
             String sql = "delete from likes where film_id = ? and user_id =?";
             jdbcTemplate.update(sql, filmId, userId);
-        }else throw new NotFoundException("Не найден пользователь для удаления лайка");
+        } else throw new NotFoundException("Не найден пользователь для удаления лайка");
     }
-    
-    public List<Long> getLikeFilms(Long filmId){
+
+    public List<Long> getLikeFilms(Long filmId) {
         LinkedList<Long> userId = new LinkedList<>();
         String sql = "select USER_ID from LIKES " +
                 "where FILM_ID = ?";
