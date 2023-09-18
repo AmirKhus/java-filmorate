@@ -14,11 +14,8 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 
 @Qualifier
@@ -45,7 +42,7 @@ public class FilmDbStorage implements FilmStorage {
             throw new ValidationException("Превышена максимальная длина описания (200 символов)");
         }
 
-        if (film.getReleaseDate().before(Date.valueOf("1895-12-28"))) {
+        if (film.getReleaseDate().isBefore(LocalDate.parse("1895-12-28"))) {
             log.error("Нельзя добавлять даты ниже 28 декабря 1895 года");
             throw new ValidationException("Нельзя добавлять даты ниже 28 декабря 1895 года");
         }
@@ -116,7 +113,7 @@ public class FilmDbStorage implements FilmStorage {
                             filmsRows.getLong("id"),
                             filmsRows.getString("name"),
                             filmsRows.getString("description"),
-                            filmsRows.getDate("releaseDate"),
+                            Objects.requireNonNull(filmsRows.getDate("releaseDate")).toLocalDate(),
                             filmsRows.getInt("duration"),
                             filmsRows.getInt("rate"),
                             mpaDAO.getMpaById(filmsRows.getLong("mpa_id")),
@@ -151,7 +148,7 @@ public class FilmDbStorage implements FilmStorage {
                     filmSql.getLong("id"),
                     filmSql.getString("name"),
                     filmSql.getString("description"),
-                    filmSql.getDate("releaseDate"),
+                    Objects.requireNonNull(filmSql.getDate("releaseDate")).toLocalDate(),
                     filmSql.getInt("duration"),
                     filmSql.getInt("rate"),
                     mpaDAO.getMpaById(filmSql.getLong("mpa_id")),
@@ -189,7 +186,7 @@ public class FilmDbStorage implements FilmStorage {
                             sqlTopFilms.getLong("id"),
                             sqlTopFilms.getString("name"),
                             sqlTopFilms.getString("description"),
-                            sqlTopFilms.getDate("releaseDate"),
+                            Objects.requireNonNull(sqlTopFilms.getDate("releaseDate")).toLocalDate(),
                             sqlTopFilms.getInt("duration"),
                             sqlTopFilms.getInt("rate"),
                             mpaDAO.getMpaById(sqlTopFilms.getLong("mpa_id")),

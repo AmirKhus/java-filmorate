@@ -13,9 +13,10 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Qualifier
 @Component
@@ -45,7 +46,7 @@ public class UserDbStorage implements UserStorage {
             user.setName(user.getLogin());
         }
 
-        if (user.getBirthday().after(new Date(System.currentTimeMillis()))) {
+        if (user.getBirthday().isAfter(LocalDate.now())) {
             log.error("дата рождения в будущем");
             throw new ValidationException("дата рождения не может быть в будущем!");
         }
@@ -86,7 +87,7 @@ public class UserDbStorage implements UserStorage {
                             usersRows.getString("email"),
                             usersRows.getString("login"),
                             usersRows.getString("name"),
-                            usersRows.getDate("birthday")
+                            Objects.requireNonNull(usersRows.getDate("birthday")).toLocalDate()
                     )
             );
         }
@@ -105,7 +106,7 @@ public class UserDbStorage implements UserStorage {
                     userSql.getString("email"),
                     userSql.getString("login"),
                     userSql.getString("name"),
-                    userSql.getDate("birthday")
+                    Objects.requireNonNull(userSql.getDate("birthday")).toLocalDate()
             );
         } else {
             log.info("Объект с id " + id + " не найден.");

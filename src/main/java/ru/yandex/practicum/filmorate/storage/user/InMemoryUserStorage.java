@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -33,7 +34,7 @@ public class InMemoryUserStorage implements UserStorage {
             user.setName(user.getLogin());
         }
 
-        if (user.getBirthday().after(new Date(System.currentTimeMillis()))) {
+        if (user.getBirthday().isAfter(LocalDate.now())) {
             log.error("дата рождения в будущем");
             throw new ValidationException("дата рождения не может быть в будущем!");
         }
