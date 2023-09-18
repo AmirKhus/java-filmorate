@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -24,7 +23,7 @@ public class UserDbStorage implements UserStorage {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private long counterId = 0L;
 
-    private  final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
     private final FriendsDAO friendsDAO;
 
     @Override
@@ -114,7 +113,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public void addFriend(Long userId, Long friendId) {
-        friendsDAO.addFriend(userId,friendId);
+        friendsDAO.addFriend(userId, friendId);
     }
 
     @Override
