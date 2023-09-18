@@ -1,3 +1,5 @@
+drop all objects;
+
 CREATE TABLE IF NOT EXISTS `users` (
   `id` integer PRIMARY KEY,
   `email` varchar(255),
