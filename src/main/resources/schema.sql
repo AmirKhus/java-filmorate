@@ -2,10 +2,10 @@ drop all objects;
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` integer PRIMARY KEY,
-  `email` varchar(255),
-  `login` varchar(255),
+  `email` varchar(20),
+  `login` varchar(30),
   `birthday` timestamp,
-  `name` varchar(255)
+  `name` varchar(30)
 );
 
 CREATE TABLE IF NOT EXISTS `genres` (
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `genres` (
 
 CREATE TABLE IF NOT EXISTS `MPA` (
   `id` integer PRIMARY KEY,
-  `name` varchar(255)
+  `name` varchar(10)
 );
 
 CREATE TABLE IF NOT EXISTS `friends` (
@@ -31,12 +31,12 @@ CREATE TABLE IF NOT EXISTS `film_genre` (
 
 CREATE TABLE IF NOT EXISTS `films` (
   `id` integer PRIMARY KEY,
-  `name` varchar(255),
-  `description` varchar(255),
+  `name` varchar(20),
+  `description` varchar(100),
   `releaseDate` timestamp,
-  `duration` varchar(255),
+  `duration` varchar(100),
   `rate` integer,
-  `mpa_id` varchar(255)
+  `mpa_id` integer
 );
 
 CREATE TABLE IF NOT EXISTS `likes` (
