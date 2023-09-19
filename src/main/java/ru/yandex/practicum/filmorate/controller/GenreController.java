@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/genres")
 public class GenreController {
     @Autowired
-    GenreStorage genreStorage;
+    private final GenreStorage genreStorage;
 
     @GetMapping("/{id}")
     public Genre getGenreById(@PathVariable long id) {

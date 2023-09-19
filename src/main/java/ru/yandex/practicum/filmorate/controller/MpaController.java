@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/mpa")
 public class MpaController {
     @Autowired
-    MpaStorage mpaStorage;
+    private final MpaStorage mpaStorage;
 
     @GetMapping
     public List<Mpa> getAllMpas() {
