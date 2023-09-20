@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` integer PRIMARY KEY,
   `email` varchar(20),
   `login` varchar(30),
-  `name` varchar(30)
-  `birthday` timestamp,
+  `name` varchar(30),
+  `birthday` timestamp
 );
 
 CREATE TABLE IF NOT EXISTS `genres` (
