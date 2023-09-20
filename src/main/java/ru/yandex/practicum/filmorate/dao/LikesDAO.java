@@ -22,13 +22,6 @@ public class LikesDAO {
         String sql = "insert into likes (film_id,user_id) values(?,?)";
         jdbcTemplate.update(sql, filmId, userId);
 
-        sql = "select  * from LIKES";
-        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql);
-        System.out.println(sql);
-        while (sqlRowSet.next()) {
-            System.out.println(sqlRowSet.getLong("film_id"));
-            System.out.println(sqlRowSet.getLong("user_id"));
-        }
     }
 
     public void deleteLike(Long filmId, Long userId) {
@@ -42,12 +35,8 @@ public class LikesDAO {
         LinkedList<Long> userId = new LinkedList<>();
         String sql = "select USER_ID from LIKES " +
                 "where FILM_ID = ?";
-
-
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, filmId);
-        System.out.println(sql);
         while (sqlRowSet.next()) {
-            System.out.println(sqlRowSet.getLong("USER_ID"));
             userId.add(sqlRowSet.getLong("USER_ID"));
         }
         return userId;

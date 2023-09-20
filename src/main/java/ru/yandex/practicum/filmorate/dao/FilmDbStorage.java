@@ -69,10 +69,10 @@ public class FilmDbStorage implements FilmStorage {
 
             filmGenreDAO.deleteGenreForFilm(film.getId());
 
-            for (Genre g : film.getGenres()) {
-                filmGenreDAO.addGenreForFilm(film.getId(), g.getId());
-            }
-
+            if(film.getGenres().size() == 1)
+                filmGenreDAO.addGenreForFilm(film.getId(),film.getGenres().get(0).getId());
+            else
+                filmGenreDAO.addListGenresForFilm(film.getId(), film.getGenres());
         }
         log.info("Объект с id " + film.getId() + " успешно обновлен.");
         return film;
