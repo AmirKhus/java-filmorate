@@ -31,26 +31,6 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User addUser(User user) {
-        if ((user.getEmail() == null || user.getEmail().isEmpty()) || user.getEmail().indexOf('@') == -1) {
-            log.error("Электронная почта была пусто или не содержала символа '@'");
-            throw new ValidationException("электронная почта не может быть пустой и должна содержать символ '@'");
-        }
-
-        if (user.getLogin() == null || user.getLogin().isEmpty() || user.getLogin().indexOf(' ') != -1) {
-            log.error("логин не может быть пустым и содержать пробелы!");
-            throw new ValidationException("логин не может быть пустым и содержать пробелы!");
-        }
-
-        if (user.getName() == null || user.getName().isEmpty()) {
-            log.warn("Поля имени у пользователя был вписан логин из-за пустого значения имени");
-            user.setName(user.getLogin());
-        }
-
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error("дата рождения в будущем");
-            throw new ValidationException("дата рождения не может быть в будущем!");
-        }
-
         counterId++;
         user.setId(counterId);
         String sql = "insert into users(id, EMAIL,LOGIN, BIRTHDAY, NAME) values(?,?,?,?,?)";

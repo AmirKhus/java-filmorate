@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` integer PRIMARY KEY,
   `email` varchar(20),
   `login` varchar(30),
-  `birthday` timestamp,
   `name` varchar(30)
+  `birthday` timestamp,
 );
 
 CREATE TABLE IF NOT EXISTS `genres` (
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `film_genre` (
 CREATE TABLE IF NOT EXISTS `films` (
   `id` integer PRIMARY KEY,
   `name` varchar(20),
-  `description` varchar(100),
+  `description` varchar(200),
   `releaseDate` timestamp,
   `duration` varchar(100),
   `rate` integer,
