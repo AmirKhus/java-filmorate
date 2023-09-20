@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 
@@ -17,7 +16,6 @@ public class FilmControllerTest {
 
     @Test
     void testAddFilmValidName() throws ValidationException {
-        filmStorage = new InMemoryFilmStorage();
         filmService = new FilmService(filmStorage);
         FilmController filmController = new FilmController(filmStorage, filmService);
         Film film = new Film();
@@ -31,7 +29,6 @@ public class FilmControllerTest {
 
     @Test
     void testAddFilmEmptyName() {
-        filmStorage = new InMemoryFilmStorage();
         filmService = new FilmService(filmStorage);
         FilmController filmController = new FilmController(filmStorage, filmService);
         Film film = new Film();
@@ -46,7 +43,6 @@ public class FilmControllerTest {
 
     @Test
     void testAddFilmExceededDescriptionLength() {
-        filmStorage = new InMemoryFilmStorage();
         filmService = new FilmService(filmStorage);
         FilmController filmController = new FilmController(filmStorage, filmService);
         Film film = new Film();
@@ -61,7 +57,6 @@ public class FilmControllerTest {
 
     @Test
     void testAddFilmInvalidReleaseDate() {
-        filmStorage = new InMemoryFilmStorage();
         filmService = new FilmService(filmStorage);
         FilmController filmController = new FilmController(filmStorage, filmService);
         Film film = new Film();
@@ -76,7 +71,6 @@ public class FilmControllerTest {
 
     @Test
     void testAddFilmNegativeDuration() {
-        filmStorage = new InMemoryFilmStorage();
         filmService = new FilmService(filmStorage);
         FilmController filmController = new FilmController(filmStorage, filmService);
         Film film = new Film();
