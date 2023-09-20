@@ -43,11 +43,11 @@ public class FilmGenreDAO {
                 if (sqlRowSet.getLong("count") == 0) {
                     Object[] args = {filmId, genreId};
                     batchArgs.add(args);
-                    String sql = "insert into FILM_GENRE(film_id, genre_id) values (?,?)";
-                    jdbcTemplate.batchUpdate(sql, batchArgs);
                 }
             }
         }
+        String sql = "insert into FILM_GENRE(film_id, genre_id) values (?,?)";
+        jdbcTemplate.batchUpdate(sql, batchArgs);
     }
 
     public List<Genre> getGenresByFilmId(long filmId) {

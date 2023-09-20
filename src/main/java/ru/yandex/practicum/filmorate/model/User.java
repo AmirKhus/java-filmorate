@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.exceptions.annotation.NotSpace;
@@ -38,7 +37,7 @@ public class User {
                 @JsonProperty("email") String email,
                 @JsonProperty("login") String login,
                 @JsonProperty("name") String name,
-                @JsonProperty("birthday") LocalDate birthday){
+                @JsonProperty("birthday") LocalDate birthday) {
         this.id = id;
         this.email = email;
         this.login = login;

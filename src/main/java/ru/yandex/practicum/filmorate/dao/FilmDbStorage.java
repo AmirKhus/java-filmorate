@@ -9,12 +9,10 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
-import java.time.LocalDate;
 import java.util.*;
 
 
@@ -42,8 +40,8 @@ public class FilmDbStorage implements FilmStorage {
 
         if (film.getGenres() != null) {
             film.setGenres(filmGenreDAO.deleteDuplicateFilmGenre(film.getGenres()));
-            if(film.getGenres().size() == 1)
-                filmGenreDAO.addGenreForFilm(film.getId(),film.getGenres().get(0).getId());
+            if (film.getGenres().size() == 1)
+                filmGenreDAO.addGenreForFilm(film.getId(), film.getGenres().get(0).getId());
             else
                 filmGenreDAO.addListGenresForFilm(film.getId(), film.getGenres());
         }
@@ -60,7 +58,7 @@ public class FilmDbStorage implements FilmStorage {
                 "set name = ?, description = ?, releaseDate = ?, duration = ?, RATE=?,  mpa_id = ? " +
                 "where id = ?";
         jdbcTemplate.update(sqlUpdateFilm,
-                film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(),film.getRate(),
+                film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getRate(),
                 film.getMpa().getId(), film.getId());
 
 
@@ -69,10 +67,10 @@ public class FilmDbStorage implements FilmStorage {
 
             filmGenreDAO.deleteGenreForFilm(film.getId());
 
-            if(film.getGenres().size() == 1)
-                filmGenreDAO.addGenreForFilm(film.getId(),film.getGenres().get(0).getId());
-            else
-                filmGenreDAO.addListGenresForFilm(film.getId(), film.getGenres());
+            for (Genre g : film.getGenres()) {
+                filmGenreDAO.addGenreForFilm(film.getId(), g.getId());
+            }
+
         }
         log.info("Объект с id " + film.getId() + " успешно обновлен.");
         return film;
