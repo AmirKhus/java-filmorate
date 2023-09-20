@@ -42,9 +42,10 @@ public class FilmDbStorage implements FilmStorage {
 
         if (film.getGenres() != null) {
             film.setGenres(filmGenreDAO.deleteDuplicateFilmGenre(film.getGenres()));
-            for (Genre g : film.getGenres()) {
-                filmGenreDAO.addGenreForFilm(film.getId(),g.getId());
-            }
+            if(film.getGenres().size() == 1)
+                filmGenreDAO.addGenreForFilm(film.getId(),film.getGenres().get(0).getId());
+            else
+                filmGenreDAO.addListGenresForFilm(film.getId(), film.getGenres());
         }
 
         log.info("Добавление новой строки в базу данных-> " + film);

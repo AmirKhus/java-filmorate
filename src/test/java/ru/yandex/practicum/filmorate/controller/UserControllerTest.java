@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
@@ -17,7 +16,6 @@ public class UserControllerTest {
 
     @Test
     void testAddUserValidEmail() {
-        userStorage = new InMemoryUserStorage();
         userService = new UserService(userStorage);
         UserController userController = new UserController(userStorage, userService);
         User user = new User();
@@ -31,7 +29,6 @@ public class UserControllerTest {
 
     @Test
     void testAddUserInvalidEmail() {
-        userStorage = new InMemoryUserStorage();
         userService = new UserService(userStorage);
         UserController userController = new UserController(userStorage, userService);
         User user = new User();
@@ -46,7 +43,6 @@ public class UserControllerTest {
 
     @Test
     void testAddUserValidLogin() {
-        userStorage = new InMemoryUserStorage();
         userService = new UserService(userStorage);
         UserController userController = new UserController(userStorage, userService);
         User user = new User();
@@ -60,7 +56,6 @@ public class UserControllerTest {
 
     @Test
     void testAddUserInvalidLogin() {
-        userStorage = new InMemoryUserStorage();
         userService = new UserService(userStorage);
         UserController userController = new UserController(userStorage, userService);
         User user = new User();
@@ -75,7 +70,6 @@ public class UserControllerTest {
 
     @Test
     void testAddUserEmptyName() {
-        userStorage = new InMemoryUserStorage();
         userService = new UserService(userStorage);
         UserController userController = new UserController(userStorage, userService);
         User user = new User();
@@ -90,7 +84,6 @@ public class UserControllerTest {
 
     @Test
     void testAddUserFutureBirthday() {
-        userStorage = new InMemoryUserStorage();
         userService = new UserService(userStorage);
         UserController userController = new UserController(userStorage, userService);
         User user = new User();
