@@ -12,13 +12,13 @@ import java.util.List;
 public class FilmService {
     private final FilmStorage filmStorage;
 
-    public Film addLike(Long userId, Long filmId) {
-        filmStorage.addLike(userId, filmId);
+    public Film addLike(Long filmId,Long userId) {
+        filmStorage.addLike(filmId, userId);
         return filmStorage.getFilmById(filmId);
     }
 
-    public Film deleteLike(Long userId, Long filmId) {
-        filmStorage.deleteLike(userId, filmId);
+    public Film deleteLike(Long filmId, Long userId) {
+        filmStorage.deleteLike(filmId, userId);
         return filmStorage.getFilmById(filmId);
     }
 
